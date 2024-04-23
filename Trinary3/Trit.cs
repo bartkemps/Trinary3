@@ -8,6 +8,7 @@ namespace Trinary3
     /// <summary>
     /// A single unit af a Trinary number, having a value of either T (-1), 0, or 1.
     /// </summary>
+    [DebuggerDisplay("{value__}")]
     public enum Trit : sbyte
     {
         /// <summary>

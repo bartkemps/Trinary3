@@ -2,7 +2,7 @@
 {
     using System;
 
-    public static class TritPairMapConverter
+    internal static class TritPairMapConverter
     {
         /// <summary>
         /// Interprets the integer as a nine trit value and uses them to create a TritPairMap.
