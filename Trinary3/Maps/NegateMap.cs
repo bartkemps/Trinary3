@@ -4,5 +4,4 @@
     {
         public override Trit this[Trit index] => (Trit)(0 - index);
     }
-
 }

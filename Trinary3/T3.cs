@@ -17,6 +17,10 @@
         TItem ITrio<TItem>.Zero => Zero;
         TItem ITrio<TItem>.Positive => Positive;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T3{TItem}"/> struct.
+        /// </summary>
+        /// <param name="positive">The value to assign to the Positive field, which corresponds to the least significant trit.</param>
         public T3(TItem positive = default)
         {
             Negative = default;
@@ -24,6 +28,11 @@
             Positive = positive;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T3{TItem}"/> struct.
+        /// </summary>
+        /// <param name="zero">The value to assign to the Zero field.</param>
+        /// <param name="positive">The value to assign to the Positive field, which corresponds to the least significant trit.</param>
         public T3(TItem zero, TItem positive)
         {
             Negative = default;
@@ -31,6 +40,12 @@
             Positive = positive;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T3{TItem}"/> struct.
+        /// </summary>
+        /// <param name="negative">The value to assign to the Negative field, which corresponds to the most significant trit.</param>
+        /// <param name="zero">The value to assign to the Zero field.</param>
+        /// <param name="positive">The value to assign to the Positive field, which corresponds to the least significant trit.</param>
         public T3(TItem negative, TItem zero, TItem positive)
         {
             Negative = negative;
@@ -38,6 +53,10 @@
             Positive = positive;
         }
 
+        /// <summary>
+        /// Gets the value for the specified trit.
+        /// </summary>
+        /// <param name="index">The index</param>
         public TItem this[Trit index]
         {
             get
