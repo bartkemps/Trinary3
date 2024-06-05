@@ -72,18 +72,40 @@ Trinary3 provides a set of methods for performing tritwise operations on trinary
 
 ## Available Operations
 
-Trinary3 provides the following tritwise operations:
+Any ITrio<Trit> can be used as a map in for a tritwise operation.
+As there are 27 possible trit combinations, there are 27 possible maps.
+Three of these maps ignore the input (TTT, 000 and 111)
+Others are built in or can be created by combining the following operations:
 
-- `IdentityLinearMap`: This operation does not change the trit.
-- `NegateLinearMap`: This operation negates the trit: it is set to Negative if Positive, Positive if Negative, and Zero if Zero.
-- `HasValueLinearMap`: This operation sets the trit to Positive if it has a non-zero value, and Negative otherwise.
-- `IsNegativeLinearMap`: This operation sets the trit to Positive if it has a negative value, and Negative otherwise.
-- `IsZeroLinearMap`: This operation sets the trit to Positive if it has a zero value, and Negative otherwise.
-- `IsPositiveLinearMap`: This operation sets the trit to Positive if it has a positive value, and Negative otherwise.
-- `IncrementLinearMap`: This operation increases the trit by one. It does not wrap around: if the input trit is Positive, the output is too.
-- `DecrementLinearMap`: This operation decreases the trit by one. It does not wrap around: if the input trit is Negative, the output is too.
-- `CircularIncrementLinearMap`: This operation increases the trit by one. It wraps around: if the input trit is Positive, the output is Negative.
-- `CircularDecrementLinearMap`: This operation decreases the trit by one. It wraps around: if the input trit is Negative, the output is Positive.
+- (TTT) *This operation ignores the input.*
+- (TT0) `DecrementLinearMap`: This operation decreases the trit by one. It does not wrap around: if the input trit is `Negative`, the output is too.
+- (TT1) `IsPositiveLinearMap`: This operation sets the trit to `Positive` if it has a `Positive` value, and `Negative` otherwise.
+- (T0T) *`Zero` if `Zero`, otherwise `Negative`. `IsZeroLinearMap` -> `MaxZeroLinearMap`*
+- (T00) `MaxZeroLinearMap`: This operation sets the trit to `Zero` if it has a `Positive` value, and otherwise leaves it unchanged.
+- (T01) `IdentityLinearMap`: This operation does not change the trit.
+- (T1T) `IsZeroLinearMap`: This operation sets the trit to `Positive` if it has a `Zero` value, and `Negative` otherwise.
+- (T10) *Switches `Zero` and `Positive`. `NegateLinearMap` -> `CircularIncrementLinearMap`*
+- (T11) *Is not `Negative`. `IsNegativeLinearMap` -> `NegateLinearMap`*
+
+- (0TT) *`Zero` if `Negative`, otherwise `Negative`. `IsNegativeLinearMap` -> `MaxZeroLinearMap` *
+- (0T0) *`Negative` if `Zero`, otherwise `Zero`. `IsZeroLinearMap` -> `CircularIncrementLinearMap`*
+- (0T1) *Switches `Zero` and `Negative`. `NegateLinearMap` -> `CircularDecrementLinearMap`*
+- (00T) *Negative if Positive, otherwise Zero. `IsPositiveLinearMap` -> `CircularIncrementLinearMap`*
+- (000) *This operation ignores the input.*
+- (001) `MinZeroLinearMap`: This operation sets the trit to `Zero` if it has a `Negative` value, and otherwise leaves it unchanged.
+- (01T) `CircularIncrementLinearMap`: This operation increases the trit by one. It wraps around: if the input trit is Positive, the output is Negative.
+- (010) *`Positive` if `Zero`, otherwise 'Zero'. `IsZeroLinearMap` -> `MinZeroLinearMap`*
+- (011) `IncrementLinearMap`: This operation increases the trit by one. It does not wrap around: if the input trit is Positive, the output is too.
+
+- (1TT) `IsNegativeLinearMap`: This operation sets the trit to `Positive` if it has a `Negative` value, and `Negative` otherwise.
+- (1T0) `CircularDecrementLinearMap`: This operation decreases the trit by one. It wraps around: if the input trit is `Negative`, the output is `Positive`				.
+- (1T1) `HasValueLinearMap`: This operation sets the trit to `Positive` if it has a non-zero value, and `Negative` otherwise.
+- (10T) `NegateLinearMap`: This operation `Negates` the trit: it is set to `Negative` if `Positive`, `Positive` if `Negative`, and `Zero` if `Zero`.
+- (100) *`Positive` if `Negative`, otherwise `zero`. `IsNegativeLinearMap` -> `MinZeroLinearMap`*
+- (101) *`Zero` if `Zero`, otherwise `Positive`. `IsZeroLinearMap` -> `CircularDecrementLinearMap`*
+- (11T) *Is not `Positive`. `IsPositiveLinearMap` -> `NegateLinearMap`*
+- (110) *`Zero` if `Positive`, otherwise `Positive`. `IsPositiveLinearMap` -> `CircularDecrementLinearMap`*
+- (111) *This operation ignores the input.*
 
 ## Performing Operations
 

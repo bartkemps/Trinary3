@@ -50,6 +50,14 @@
         /// It wraps around: if the input trit is Negative, the output is Positive.
         /// </summary>
         public static ITrio<Trit> CircularDecrementLinearMap => new CircularDecrementMap();
+        /// <summary>
+        /// This map maximizes the trit to Zero. So if the input trit is Negative, the output is Negative, otherwise Zero.
+        /// </summary>
+        public static ITrio<Trit> MaxZeroLinearMap => new MaxZeroMap();
+        /// <summary>
+        /// This map minimizes the trit to Zero. So if the input trit is Positive, the output is Positive, otherwise Zero.
+        /// </summary>
+        public static ITrio<Trit> MinZeroLinearMap => new MinZeroMap();
 
         /// <summary>
         /// Performs a tritwise operation on a number.
