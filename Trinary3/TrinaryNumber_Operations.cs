@@ -10,46 +10,46 @@
         /// <summary>
         /// This map does not change the trit.
         /// </summary>
-        public static ITrio<Trit> IdentityMap => new IdentityMap();
+        public static ITrio<Trit> IdentityLinearMap => new IdentityMap();
         /// <summary>
         /// This map negates the trit: is set to Negative if Positive, Positive if Negative, and Zero if Zero.
         /// </summary>
-        public static ITrio<Trit> NegateMap => new NegateMap();
+        public static ITrio<Trit> NegateLinearMap => new NegateMap();
         /// <summary>
         /// This map sets the trit to Positive if it has a non-zero value, and Negative otherwise.
         /// </summary>
-        public static ITrio<Trit> HasValueMap => new HasValueMap();
+        public static ITrio<Trit> HasValueLinearMap => new HasValueMap();
         /// <summary>
         /// This map sets the trit to Positive if it has a negative value, and Negative otherwise.
         /// </summary>
-        public static ITrio<Trit> IsNegativeMap => new IsNegativeMap();
+        public static ITrio<Trit> IsNegativeLinearMap => new IsNegativeMap();
         /// <summary>
         /// This map sets the trit to Positive if it has a zero value, and Negative otherwise.
         /// </summary>
-        public static ITrio<Trit> IsZeroMap => new IsNegativeMap();
+        public static ITrio<Trit> IsZeroLinearMap => new IsNegativeMap();
         /// <summary>
         /// This map sets the trit to Positive if it has a positive value, and Negative otherwise.
         /// </summary>
-        public static ITrio<Trit> IsPositiveMap => new IsPositiveMap();
+        public static ITrio<Trit> IsPositiveLinearMap => new IsPositiveMap();
         /// <summary>
         /// This map increases the trit by one.
         /// It does not wrap around: if the input trit is Positive, the output is too.
         /// </summary>
-        public static ITrio<Trit> IncrementMap => new IncrementMap();
+        public static ITrio<Trit> IncrementLinearMap => new IncrementMap();
         /// <summary>
         /// This map decreases the trit by one.
         /// It does not wrap around: if the input trit is Negative, the output is too.
         /// </summary>
-        public static ITrio<Trit> DecrementMap => new DecrementMap();
+        public static ITrio<Trit> DecrementLinearMap => new DecrementMap();
         /// <summary>
         /// This map increases the trit by one.
         /// It wraps around: if the input trit is Positive, the output is Negative.
-        public static ITrio<Trit> CircularIncrementMap => new CircularIncrementMap();
+        public static ITrio<Trit> CircularIncrementLinearMap => new CircularIncrementMap();
         /// <summary>
         /// This map decreases the trit by one.
         /// It wraps around: if the input trit is Negative, the output is Positive.
         /// </summary>
-        public static ITrio<Trit> CircularDecrementMap => new CircularDecrementMap();
+        public static ITrio<Trit> CircularDecrementLinearMap => new CircularDecrementMap();
 
         /// <summary>
         /// Performs a tritwise operation on a number.
@@ -154,7 +154,7 @@
         /// the resulting number will be dependent on the number of trits.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static BigInteger TritwiseMap(BigInteger value1, BigInteger value2, INono<Trit> map, int minNumberOfTrits = 0)
+        public static BigInteger TritwiseMap(BigInteger value1, BigInteger value2, ITrio<ITrio<Trit>> map, int minNumberOfTrits = 0)
         {
             if (minNumberOfTrits < 0)
             {
@@ -167,12 +167,12 @@
             SetMinimumNumberOfTrits(minNumberOfTrits, ref trits2);
             for (int i = 0; i < trits1.Length; i++)
             {
-                trits1[i] = map[trits1[i], trits2[i]];
+                trits1[i] = map[trits1[i]][trits2[i]];
             }
             return TritToNumberConverter.ToBigInteger(trits1);
         }
 
-        public static long TritwiseMap(long value1, long value2, INono<Trit> map, int minNumberOfTrits = 0)
+        public static long TritwiseMap(long value1, long value2, ITrio<ITrio<Trit>> map, int minNumberOfTrits = 0)
         {
             if (minNumberOfTrits < 0)
             {
@@ -185,7 +185,7 @@
             SetMinimumNumberOfTrits(minNumberOfTrits, ref trits2);
             for (int i = 0; i < trits1.Length; i++)
             {
-                trits1[i] = map[trits1[i], trits2[i]];
+                trits1[i] = map[trits1[i]][trits2[i]];
             }
             return TritToNumberConverter.ToInt64(trits1);
         }

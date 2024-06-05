@@ -1,8 +1,7 @@
 ﻿namespace Trinary3.Maps
 {
-    internal class IncrementMap : ITrio<Trit>
+    internal class IncrementMap : LinearMap
     {
-        public Trit this[Trit index] => index == Trit.Positive ? Trit.Positive : index + 1;
+        public override Trit this[Trit index] => index == Trit.Positive ? Trit.Positive : index + 1;
     }
-
 }

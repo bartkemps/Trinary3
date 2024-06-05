@@ -97,7 +97,6 @@ public class TrinaryNumberTests_Parse
     [InlineData("1T0", "1", "0", "T", 6)]
     public void ParseToInt64_ShouldRespectSettings(string ternary, string positive, string zero, string negative, long expected)
     {
-        // Arrange
         var settings = new TrinarySettings
         {
             Positive = positive[0],
@@ -107,10 +106,8 @@ public class TrinaryNumberTests_Parse
             IgnoreWhitespace = true
         };
 
-        // Act
         var result = TrinaryNumber.ParseToInt64(ternary, settings);
 
-        // Assert
         result.Should().Be(expected);
     }
 
