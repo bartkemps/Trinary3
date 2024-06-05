@@ -66,6 +66,48 @@ var settings = new TrinarySettings
 long number = TrinaryNumber.ParseToInt64("PZN", settings);  // Returns 6
 ```
 
+# Trinary3 - Tritwise Operations
+
+Trinary3 provides a set of methods for performing tritwise operations on trinary numbers. These operations are part of the `TrinaryNumber` static class and are implemented as maps that transform each trit of a number independently.
+
+## Available Operations
+
+Trinary3 provides the following tritwise operations:
+
+- `IdentityLinearMap`: This operation does not change the trit.
+- `NegateLinearMap`: This operation negates the trit: it is set to Negative if Positive, Positive if Negative, and Zero if Zero.
+- `HasValueLinearMap`: This operation sets the trit to Positive if it has a non-zero value, and Negative otherwise.
+- `IsNegativeLinearMap`: This operation sets the trit to Positive if it has a negative value, and Negative otherwise.
+- `IsZeroLinearMap`: This operation sets the trit to Positive if it has a zero value, and Negative otherwise.
+- `IsPositiveLinearMap`: This operation sets the trit to Positive if it has a positive value, and Negative otherwise.
+- `IncrementLinearMap`: This operation increases the trit by one. It does not wrap around: if the input trit is Positive, the output is too.
+- `DecrementLinearMap`: This operation decreases the trit by one. It does not wrap around: if the input trit is Negative, the output is too.
+- `CircularIncrementLinearMap`: This operation increases the trit by one. It wraps around: if the input trit is Positive, the output is Negative.
+- `CircularDecrementLinearMap`: This operation decreases the trit by one. It wraps around: if the input trit is Negative, the output is Positive.
+
+## Performing Operations
+
+To perform a tritwise operation on a number, you can use the `TritwiseMap` method. This method takes a number and a map, and applies the map to each trit of the number.
+
+Here's an example of how to negate a trinary number:
+
+```csharp
+long number = 6;  // ¹⁰6 = ³1T0  (9 - 3 + 0)
+long negated = TrinaryNumber.TritwiseMap(number, TrinaryNumber.NegateLinearMap);  // Returns -6, which is T10 in trinary
+```
+
+You can also specify a minimum number of trits for the result. If the result has fewer trits than this minimum, it is padded with zeros before performing the operations.
+This is important because many operations change zero trits to negative or positive trits. In that case, the ultimate result is dependent on the number of trits processed.
+
+```csharp
+/// ³01T0 = ¹⁰6 (0 + 9 - 3 + 0)
+long number = 6;
+/// IsPositive sets every trit that's Positive to Positive
+/// and every trit that's not Positive to Negative
+/// ³01T0 becomes ³T1TT, which equals ¹⁰-22 (-27 + 9 - 3 - 1)
+long isPositive = TrinaryNumber.TritwiseMap(number, TrinaryNumber.IsPositiveLinearMap, 4); 
+```
+
 
 ## More Examples
 
@@ -118,13 +160,15 @@ Console.WriteLine(trit.Positive); // Output: "Yellow"
 
 ## Accessing Trits
 
-You can access the trits of a `T3<TItem>` using the `Negative`, `Zero`, and `Positive` fields:
-
-```csharp
-string negative = t3.Negative;
-string zero = t3.Zero; 
-string positive = t3.Positive;
-```
+You can access the trits of a `T3<TItem>` using the `Negative`, `Zero`, and `Positive` fields or with a Trit indexer:
 
 Note: The ITrio<TItem> interface provides **properties** Negative, Zero, and Positive to access the trits.
 However, for performance reasons, the T3<TItem> struct also exposes these values as **fields**.
+
+```csharp
+var t3 = new T3<string>("Red", "Yellow", "Blue");
+string red = (ITrio<Trit>)t3.Negative; // using tye property defined in the interface
+string yellow = t3.Zero; // field access
+string blue = t3[Trit.Positive]; // indexer access
+```
+
