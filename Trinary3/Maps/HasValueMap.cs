@@ -1,8 +1,7 @@
 ﻿namespace Trinary3.Maps
 {
-    internal class HasValueMap : ITrio<Trit>
+    internal class HasValueMap : LinearMap
     {
-        public Trit this[Trit index] => index == Trit.Zero ? Trit.Negative : Trit.Positive;
+        public override Trit this[Trit index] => index == Trit.Zero ? Trit.Negative : Trit.Positive;
     }
-
 }

@@ -1,7 +1,7 @@
 ﻿namespace Trinary3.Maps
 {
-    internal class IdentityMap : ITrio<Trit>
+    internal class IdentityMap : LinearMap
     {
-        public Trit this[Trit index] => index;
+        public override Trit this[Trit index] => index;
     }
 }
