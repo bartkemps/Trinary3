@@ -75,21 +75,8 @@
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static BigInteger TritwiseMap(BigInteger value, ITrio<Trit> map, int minNumberOfTrits = 0)
         {
-            if (minNumberOfTrits < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(minNumberOfTrits), minNumberOfTrits, "The minimum number of trits must be non-negative.");
-            }
             var trits = TrinaryFormatter.ToTrits(value);
-            if (trits.Length < minNumberOfTrits)
-            {
-                Array.Reverse(trits);
-                Array.Resize(ref trits, minNumberOfTrits);
-                Array.Reverse(trits);
-            }
-            for(int i = 0; i < trits.Length; i++)
-            {
-                trits[i] = map[trits[i]];
-            }
+            trits = TritMapper.TritwiseMap(map, minNumberOfTrits, trits);
             return TritToNumberConverter.ToBigInteger(trits);
         }
 
@@ -109,43 +96,12 @@
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static long TritwiseMap(long value, ITrio<Trit> map, int minNumberOfTrits = 0)
         {
-            if (minNumberOfTrits < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(minNumberOfTrits), minNumberOfTrits, "The minimum number of trits must be non-negative.");
-            }
             var trits = TrinaryFormatter.ToTrits(value);
-            SetMinimumNumberOfTrits(minNumberOfTrits, ref trits);
-            for (int i = 0; i < trits.Length; i++)
-            {
-                trits[i] = map[trits[i]];
-            }
+            trits = TritMapper.TritwiseMap(map, minNumberOfTrits, trits);
             return TritToNumberConverter.ToInt64(trits);
         }
 
-        /// <summary>
-        /// Performs a tritwise operation on a pair of numbers number.
-        /// </summary>
-        /// <param name="value1">The first number to perform the tritwise operation on</param>
-        /// <param name="value2">The second number to perform the tritwise operation on</param>
-        /// <param name="map">
-        /// The operation to perform, expressed in a nono (a trio of trios) of trit output values, 
-        /// to be returned when the input trits is Negative - Negative through Positive - Positive, respectively.
-        /// </param>
-        /// <param name="minNumberOfTrits">
-        /// The minimum number of trits the result should have.
-        /// When a pair of zero input trits map to a non-zero output trit, 
-        /// the resulting number will be dependent on the number of trits.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private static void SetMinimumNumberOfTrits(int minNumberOfTrits, ref Trit[] trits)
-        {
-            if (trits.Length < minNumberOfTrits)
-            {
-                Array.Reverse(trits);
-                Array.Resize(ref trits, minNumberOfTrits);
-                Array.Reverse(trits);
-            }
-        }
+
 
         /// <summary>
         /// Performs a tritwise operation on a pair of numbers number.
@@ -161,43 +117,42 @@
         /// When a pair of zero input trits map to a non-zero output trit, 
         /// the resulting number will be dependent on the number of trits.
         /// </param>
+        /// <param name="maxNumberOfTrits">
+        /// The maximum number of trits the result should have.
+        /// </param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static BigInteger TritwiseMap(BigInteger value1, BigInteger value2, ITrio<ITrio<Trit>> map, int minNumberOfTrits = 0)
+        public static long TritwiseMap(long value1, long value2, ITrio<ITrio<Trit>> map, int minNumberOfTrits = 1, int maxNumberOfTrits = 40)
         {
-            if (minNumberOfTrits < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(minNumberOfTrits), minNumberOfTrits, "The minimum number of trits must be non-negative.");
-            }
             var trits1 = TrinaryFormatter.ToTrits(value1);
             var trits2 = TrinaryFormatter.ToTrits(value2);
-            minNumberOfTrits = Math.Max(minNumberOfTrits, Math.Max(trits1.Length, trits2.Length));
-            SetMinimumNumberOfTrits(minNumberOfTrits, ref trits1);
-            SetMinimumNumberOfTrits(minNumberOfTrits, ref trits2);
-            for (int i = 0; i < trits1.Length; i++)
-            {
-                trits1[i] = map[trits1[i]][trits2[i]];
-            }
-            return TritToNumberConverter.ToBigInteger(trits1);
-        }
-
-        public static long TritwiseMap(long value1, long value2, ITrio<ITrio<Trit>> map, int minNumberOfTrits = 0)
-        {
-            if (minNumberOfTrits < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(minNumberOfTrits), minNumberOfTrits, "The minimum number of trits must be non-negative.");
-            }
-            var trits1 = TrinaryFormatter.ToTrits(value1);
-            var trits2 = TrinaryFormatter.ToTrits(value2);
-            minNumberOfTrits = Math.Max(minNumberOfTrits, Math.Max(trits1.Length, trits2.Length));
-            SetMinimumNumberOfTrits(minNumberOfTrits, ref trits1);
-            SetMinimumNumberOfTrits(minNumberOfTrits, ref trits2);
-            for (int i = 0; i < trits1.Length; i++)
-            {
-                trits1[i] = map[trits1[i]][trits2[i]];
-            }
+            TritMapper.TritwiseMap(map, ref minNumberOfTrits, maxNumberOfTrits, ref trits1, ref trits2);
             return TritToNumberConverter.ToInt64(trits1);
         }
 
-
+        /// <summary>
+        /// Performs a tritwise operation on a pair of numbers number.
+        /// </summary>
+        /// <param name="value1">The first number to perform the tritwise operation on</param>
+        /// <param name="value2">The second number to perform the tritwise operation on</param>
+        /// <param name="map">
+        /// The operation to perform, expressed in a nono (a trio of trios) of trit output values, 
+        /// to be returned when the input trits is Negative - Negative through Positive - Positive, respectively.
+        /// </param>
+        /// <param name="minNumberOfTrits">
+        /// The minimum number of trits the result should have.
+        /// When a pair of zero input trits map to a non-zero output trit, 
+        /// the resulting number will be dependent on the number of trits.
+        /// </param>
+        /// <param name="maxNumberOfTrits">
+        /// The maximum number of trits the result should have.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static BigInteger TritwiseMap(BigInteger value1, BigInteger value2, ITrio<ITrio<Trit>> map, int minNumberOfTrits = 1, int maxNumberOfTrits = 40)
+        {
+            var trits1 = TrinaryFormatter.ToTrits(value1);
+            var trits2 = TrinaryFormatter.ToTrits(value2);
+            TritMapper.TritwiseMap(map, ref minNumberOfTrits, maxNumberOfTrits, ref trits1, ref trits2);
+            return TritToNumberConverter.ToBigInteger(trits1);
+        }
     }
 }

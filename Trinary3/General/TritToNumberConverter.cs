@@ -1,7 +1,6 @@
 ﻿namespace Trinary3.General
 {
     using System.Numerics;
-    using System.Runtime.InteropServices.ComTypes;
 
     internal static class TritToNumberConverter
     {
